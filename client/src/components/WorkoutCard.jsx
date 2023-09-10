@@ -1,6 +1,6 @@
 import { useWorkoutContext } from "../hooks/useWorkoutsContext";
 
-const WorkoutCard = ({ key, workout }) => {
+const WorkoutCard = ({ key, workout, setCurrentId }) => {
   const { dispatch } = useWorkoutContext();
 
   const handleDeleteWorkout = async (id) => {
@@ -36,6 +36,14 @@ const WorkoutCard = ({ key, workout }) => {
       <p>{workout.createdAt}</p>
       <br />
       <button onClick={() => handleDeleteWorkout(workout._id)}>Delete</button>
+      <br />
+      <button
+        onClick={() => {
+          setCurrentId(workout._id);
+        }}
+      >
+        Edit
+      </button>
     </div>
   );
 };

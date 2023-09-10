@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useWorkoutContext } from "../hooks/useWorkoutsContext";
 
 import WorkoutCard from "../components/WorkoutCard";
@@ -6,6 +6,8 @@ import WorkoutForm from "../components/WorkoutForm";
 
 const Home = () => {
   // const [workouts, setWorkouts] = useState([]);
+
+  const [currentId, setCurrentId] = useState(0);
 
   const { workouts, dispatch } = useWorkoutContext();
 
@@ -40,10 +42,14 @@ const Home = () => {
         <h1>Schedule</h1>
         {workouts &&
           workouts.map((workout) => (
-            <WorkoutCard key={workout._id} workout={workout} />
+            <WorkoutCard
+              key={workout._id}
+              workout={workout}
+              setCurrentId={setCurrentId}
+            />
           ))}
       </div>
-      <WorkoutForm />
+      <WorkoutForm currentId={currentId} setCurrentId={setCurrentId} />
     </div>
   );
 };

@@ -1,13 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useWorkoutContext } from "../hooks/useWorkoutsContext";
 
-const WorkoutForm = () => {
+const WorkoutForm = ({ currentId, setCurrentId }) => {
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
   const [error, setError] = useState(null);
 
-  const { dispatch } = useWorkoutContext();
+  const { workouts, dispatch } = useWorkoutContext();
+
+  const workoutExits = currentId
+    ? workouts.find((workout) => workout._id === currentId)
+    : false;
+
+  useEffect(() => {
+    if (workoutExits) {
+      setTitle(workoutExits.title);
+      setLoad(workoutExits.load);
+      setReps(workoutExits.reps);
+    }
+  }, [workoutExits]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,8 +49,41 @@ const WorkoutForm = () => {
     }
   };
 
+  // const handleUpdate = async (id) =>{
+  //   const response = await fetch("http://localhost:8000/api/workouts/${id}")
+  // }
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    const workout = { title, reps, load };
+
+    const response = await fetch(
+      `http://localhost:8000/api/workouts/${currentId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(workout),
+      }
+    );
+    const json = await response.json();
+    if (!response.ok) {
+      setError(json.message);
+    }
+    if (response.ok) {
+      setTitle("");
+      setLoad("");
+      setReps("");
+      setError(null);
+      console.log(json.message);
+      // dispatch({ type: "CREATE_WORKOUT", payload: json.workout });
+    }
+  };
+
   return (
-    <form className="create" onSubmit={handleSubmit}>
+    <form className="create" onSubmit={currentId ? handleUpdate : handleSubmit}>
       <h3>Add a new workout</h3>
       <label>Excercise Title: </label>
       <input
@@ -61,7 +106,7 @@ const WorkoutForm = () => {
         onChange={(e) => setReps(e.target.value)}
         value={reps}
       />
-      <button>Add workout</button>
+      <button>{currentId ? "Edit Workout" : "Add workout"}</button>
     </form>
   );
 };
