@@ -39,7 +39,6 @@ const Home = () => {
   return (
     <div className="home">
       <div className="workouts">
-        <h1>Schedule</h1>
         {workouts &&
           workouts.map((workout) => (
             <WorkoutCard

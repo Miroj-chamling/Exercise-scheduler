@@ -1,4 +1,6 @@
 import { useWorkoutContext } from "../hooks/useWorkoutsContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 const WorkoutCard = ({ key, workout, setCurrentId }) => {
   const { dispatch } = useWorkoutContext();
@@ -23,27 +25,40 @@ const WorkoutCard = ({ key, workout, setCurrentId }) => {
   };
 
   return (
-    <div key={key} className="workout-details">
-      <h4>{workout.title}</h4>
-      <p>
-        <strong>Load (Kg): </strong>
-        {workout.load}
-      </p>
-      <p>
-        <strong>Reps : </strong>
-        {workout.reps}
-      </p>
-      <p>{workout.createdAt}</p>
-      <br />
-      <button onClick={() => handleDeleteWorkout(workout._id)}>Delete</button>
-      <br />
-      <button
-        onClick={() => {
-          setCurrentId(workout._id);
-        }}
-      >
-        Edit
-      </button>
+    <div className="workout-card">
+      <div key={key} className="workout-details">
+        <h4>{workout.title}</h4>
+        <p>
+          <strong>Load (Kg): </strong>
+          {workout.load}
+        </p>
+        <br />
+        <p>
+          <strong>Reps : </strong>
+          {workout.reps}
+        </p>
+        <br />
+        <p>{workout.createdAt}</p>
+        <br />
+      </div>
+      <div className="buttons">
+        <div className="delete-btn">
+          <FontAwesomeIcon
+            onClick={() => handleDeleteWorkout(workout._id)}
+            icon={faTrash}
+            aria-label="delete"
+          />
+          <br />
+        </div>
+        <div className="edit-btn">
+          <FontAwesomeIcon
+            onClick={() => {
+              setCurrentId(workout._id);
+            }}
+            icon={faEdit}
+          />
+        </div>
+      </div>
     </div>
   );
 };

@@ -106,7 +106,9 @@ const WorkoutForm = ({ currentId, setCurrentId }) => {
         onChange={(e) => setReps(e.target.value)}
         value={reps}
       />
-      <button>{currentId ? "Edit Workout" : "Add workout"}</button>
+      <button className="add-btn">
+        {currentId ? "Edit Workout" : "Add workout"}
+      </button>
     </form>
   );
 };
