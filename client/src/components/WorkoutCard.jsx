@@ -1,6 +1,8 @@
 import { useWorkoutContext } from "../hooks/useWorkoutsContext";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { formatDistanceToNow, format, parseISO } from "date-fns";
 
 const WorkoutCard = ({ key, workout, setCurrentId }) => {
   const { dispatch } = useWorkoutContext();
@@ -38,7 +40,12 @@ const WorkoutCard = ({ key, workout, setCurrentId }) => {
           {workout.reps}
         </p>
         <br />
-        <p>{workout.createdAt}</p>
+        <p>
+          {format(parseISO(workout.createdAt), "eeee do MMM, yyyy")}
+          {/* {formatDistanceToNow(new Date(workout.createdAt), {
+            addSuffix: true,
+          })} */}
+        </p>
         <br />
       </div>
       <div className="buttons">
