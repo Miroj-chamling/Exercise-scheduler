@@ -49,6 +49,7 @@ header a {
   border-radius: 16px;
   background-color: #415A77;
   cursor: pointer;
+  margin-bottom: 20px;
 }
 
 .workout-details {
@@ -82,12 +83,6 @@ header a {
 
 
 /* new workout form */
-.create{
-  background-color: #415A77;
-  padding: 20px;
-  border-radius: 16px;
-}
-
 label, input {
   display: block;
 }

@@ -6,6 +6,7 @@ const WorkoutForm = ({ currentId, setCurrentId }) => {
   const [load, setLoad] = useState("");
   const [reps, setReps] = useState("");
   const [error, setError] = useState(null);
+  const [isformError, setIsFormError] = useState(false);
 
   const { workouts, dispatch } = useWorkoutContext();
 
@@ -23,29 +24,34 @@ const WorkoutForm = ({ currentId, setCurrentId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (load < 0 || reps < 0) {
+      setIsFormError(true);
+      console.log("loads or reps cannot be negative");
+    } else {
+      const workout = { title, reps, load };
 
-    const workout = { title, reps, load };
+      const response = await fetch("http://localhost:8000/api/workouts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(workout),
+      });
 
-    const response = await fetch("http://localhost:8000/api/workouts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(workout),
-    });
+      const json = await response.json();
 
-    const json = await response.json();
-
-    if (!response.ok) {
-      setError(json.message);
-    }
-    if (response.ok) {
-      setTitle("");
-      setLoad("");
-      setReps("");
-      setError(null);
-      console.log("new workout added to the db");
-      dispatch({ type: "CREATE_WORKOUT", payload: json.workout });
+      if (!response.ok) {
+        setError(json.message);
+      }
+      if (response.ok) {
+        setTitle("");
+        setLoad("");
+        setReps("");
+        setError(null);
+        console.log("new workout added to the db");
+        dispatch({ type: "CREATE_WORKOUT", payload: json.workout });
+        setIsFormError(false);
+      }
     }
   };
 
@@ -109,6 +115,11 @@ const WorkoutForm = ({ currentId, setCurrentId }) => {
       <button className="add-btn">
         {currentId ? "Edit Workout" : "Add workout"}
       </button>
+      {isformError && (
+        <p style={{ color: "#8b0000" }}>
+          OPPS! Load or Reps cannot be negative
+        </p>
+      )}
     </form>
   );
 };
