@@ -53,8 +53,8 @@ const WorkoutForm = ({ currentId, setCurrentId }) => {
   //   const response = await fetch("http://localhost:8000/api/workouts/${id}")
   // }
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
+  const handleUpdate = async () => {
+    // e.preventDefault();
 
     const workout = { title, reps, load };
 

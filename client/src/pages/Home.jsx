@@ -6,16 +6,17 @@ import WorkoutForm from "../components/WorkoutForm";
 
 const Home = () => {
   // const [workouts, setWorkouts] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [currentId, setCurrentId] = useState(0);
 
   const { workouts, dispatch } = useWorkoutContext();
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchWoroutsFromContext = async () => {
       const response = await fetch("http://localhost:8000/api/workouts");
       const json = await response.json();
-
+      setIsLoading(false);
       if (response.ok) {
         dispatch({ type: "FETCH_WORKOUTS", payload: json.workouts });
       }
@@ -38,16 +39,20 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="workouts">
-        {workouts &&
-          workouts.map((workout) => (
-            <WorkoutCard
-              key={workout._id}
-              workout={workout}
-              setCurrentId={setCurrentId}
-            />
-          ))}
-      </div>
+      {isLoading ? (
+        <h2>Loading...</h2>
+      ) : (
+        <div className="workouts">
+          {workouts &&
+            workouts.map((workout) => (
+              <WorkoutCard
+                key={workout._id}
+                workout={workout}
+                setCurrentId={setCurrentId}
+              />
+            ))}
+        </div>
+      )}
       <WorkoutForm currentId={currentId} setCurrentId={setCurrentId} />
     </div>
   );
