@@ -123,5 +123,5 @@ const WorkoutForm = ({ currentId, setCurrentId }) => {
     </form>
   );
 };
-
+//this is a workout form
 export default WorkoutForm;
